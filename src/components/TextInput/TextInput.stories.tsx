@@ -1,10 +1,39 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
+import { ThemeProvider, createTheme } from "@mui/material/styles";
+import { Box } from "@mui/material";
 import { TextInput } from "./TextInput";
+
+// Create a custom theme just for testing how TextInput absorbs it
+const testTheme = createTheme({
+  palette: {
+    primary: {
+      main: "#8e24aa", // A distinct purple to prove theming works
+    },
+    error: {
+      main: "#d32f2f", 
+    },
+    background: {
+      paper: "#fdfdfd",
+    }
+  },
+  shape: {
+    borderRadius: 12,
+  }
+});
 
 const meta = {
   title: "Forms/TextInput",
   component: TextInput,
   tags: ["autodocs"],
+  decorators: [
+    (Story) => (
+      <ThemeProvider theme={testTheme}>
+        <Box sx={{ p: 4, maxWidth: "400px", bgcolor: "#f5f5f5", borderRadius: 4 }}>
+          <Story />
+        </Box>
+      </ThemeProvider>
+    ),
+  ],
 } satisfies Meta<typeof TextInput>;
 
 export default meta;
@@ -47,3 +76,38 @@ export const PasswordVariant: Story = {
     required: true,
   },
 };
+
+// Error Validation Variant provided from props
+export const ErrorVariant: Story = {
+  args: {
+    label: "Error State (Prop Controlled)",
+    type: "email",
+    placeholder: "john.doe@example.com",
+    required: true,
+    error: true,
+    helperText: "This error is forced via props.",
+  },
+};
+
+// Showcases built-in validation (on blur / change)
+export const AutoValidation: Story = {
+  args: {
+    label: "Auto Validate Email (Blur to test)",
+    type: "email",
+    placeholder: "invalid-email",
+    required: true,
+  },
+};
+
+// Showcases a custom validation function
+export const CustomValidation: Story = {
+  args: {
+    label: "Username (Must be 5+ chars)",
+    placeholder: "user",
+    validate: (val) => {
+      if (val.length < 5) return "Username must be at least 5 characters.";
+      return undefined;
+    },
+  },
+};
+

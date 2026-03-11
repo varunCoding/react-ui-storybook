@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { ThemeProvider } from '@mui/material/styles';
-import { healthTheme } from '../theme/theme';
+
+
 import { DatePicker } from '../components/DatePicker';
 import { Box } from '@mui/material';
 import { useState } from 'react';
@@ -14,11 +14,9 @@ const meta = {
   tags: ['autodocs'],
   decorators: [
     (Story) => (
-      <ThemeProvider theme={healthTheme}>
-        <Box sx={{ width: '400px', p: 4, backgroundColor: healthTheme.palette.background.default, borderRadius: '16px' }}>
-          <Story />
-        </Box>
-      </ThemeProvider>
+      <Box sx={{ width: '400px', p: 4, bgcolor: 'background.default', borderRadius: '16px' }}>
+        <Story />
+      </Box>
     ),
   ],
 } satisfies Meta<typeof DatePicker>;

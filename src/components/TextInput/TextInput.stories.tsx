@@ -1,25 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { ThemeProvider, createTheme } from "@mui/material/styles";
 import { Box } from "@mui/material";
 import { TextInput } from "./TextInput";
-
-// Create a custom theme just for testing how TextInput absorbs it
-const testTheme = createTheme({
-  palette: {
-    primary: {
-      main: "#8e24aa", // A distinct purple to prove theming works
-    },
-    error: {
-      main: "#d32f2f", 
-    },
-    background: {
-      paper: "#fdfdfd",
-    }
-  },
-  shape: {
-    borderRadius: 12,
-  }
-});
 
 const meta = {
   title: "Forms/TextInput",
@@ -27,11 +8,9 @@ const meta = {
   tags: ["autodocs"],
   decorators: [
     (Story) => (
-      <ThemeProvider theme={testTheme}>
-        <Box sx={{ p: 4, maxWidth: "400px", bgcolor: "#f5f5f5", borderRadius: 4 }}>
-          <Story />
-        </Box>
-      </ThemeProvider>
+      <Box sx={{ p: 4, maxWidth: "400px", bgcolor: "#f5f5f5", borderRadius: 4 }}>
+        <Story />
+      </Box>
     ),
   ],
 } satisfies Meta<typeof TextInput>;

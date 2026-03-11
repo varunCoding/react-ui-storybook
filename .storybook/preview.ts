@@ -1,7 +1,7 @@
 import type { Preview } from '@storybook/react';
 import { ThemeProvider, CssBaseline } from '@mui/material';
 import { withThemeFromJSXProvider } from '@storybook/addon-themes';
-import { healthTheme } from '../src/theme/theme';
+import { healthTheme, darkTheme } from '../src/theme/theme';
 
 const preview: Preview = {
   parameters: {
@@ -16,6 +16,7 @@ const preview: Preview = {
     withThemeFromJSXProvider({
       themes: {
         light: healthTheme,
+        dark: darkTheme,
       },
       defaultTheme: 'light',
       Provider: ThemeProvider,

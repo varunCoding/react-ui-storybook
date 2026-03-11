@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { ThemeProvider } from '@mui/material/styles';
-import { healthTheme } from '../theme/theme';
+
+
 import { GenericAccordion } from '../components/GenericAccordion';
 import type { AccordionItem } from '../components/GenericAccordion';
 import { Typography, Box } from '@mui/material';
@@ -14,11 +14,9 @@ const meta = {
   tags: ['autodocs'],
   decorators: [
     (Story) => (
-      <ThemeProvider theme={healthTheme}>
-        <Box sx={{ width: '600px', maxWidth: '100%', p: 2 }}>
-          <Story />
-        </Box>
-      </ThemeProvider>
+      <Box sx={{ width: '600px', maxWidth: '100%', p: 2 }}>
+        <Story />
+      </Box>
     ),
   ],
 } satisfies Meta<typeof GenericAccordion>;

@@ -8,7 +8,7 @@ const meta = {
   tags: ["autodocs"],
   decorators: [
     (Story) => (
-      <Box sx={{ p: 4, maxWidth: "400px", bgcolor: "#f5f5f5", borderRadius: 4 }}>
+      <Box sx={{ p: 4, maxWidth: "400px", bgcolor: "background.default", borderRadius: 4 }}>
         <Story />
       </Box>
     ),

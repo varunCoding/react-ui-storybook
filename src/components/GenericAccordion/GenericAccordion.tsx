@@ -5,15 +5,22 @@ import {
   AccordionSummary,
   AccordionDetails,
   Typography,
-  useTheme,
   Box,
+  useTheme,
 } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import type { SxProps, Theme } from '@mui/material/styles';
 
 export interface AccordionItem {
   id: string;
+  /** Main title displayed in both open and closed states */
   title: ReactNode;
+  /** Status indicator (e.g., 'Complete', 'Incomplete') displayed only in the closed state */
+  status?: ReactNode;
+  /** Content to display when the accordion is expanded. Supports complex forms and inputs. */
   content: ReactNode;
+  /** Custom CSS overrides for this specific accordion item */
+  sx?: SxProps<Theme>;
 }
 
 export interface GenericAccordionProps {
@@ -28,7 +35,7 @@ export const GenericAccordion: React.FC<GenericAccordionProps> = ({
   allowMultiple = false,
 }) => {
   const theme = useTheme();
-  
+
   // State for single-open mode
   const [expandedId, setExpandedId] = useState<string | false>(false);
   
@@ -67,48 +74,55 @@ export const GenericAccordion: React.FC<GenericAccordionProps> = ({
             key={item.id}
             expanded={expanded}
             onChange={handleChange(item.id)}
+            elevation={0}
             sx={{
-              mb: 1,
-              boxShadow: '0 2px 8px rgba(0,0,0,0.05)',
-              borderRadius: '8px !important',
-              '&:before': {
-                display: 'none', // Remove default MUI top border
-              },
-              overflow: 'hidden',
-              transition: 'all 0.3s ease',
-              border: `1px solid ${expanded ? theme.palette.primary.main : 'transparent'}`,
+               mb: 1.5,
+               '&:before': {
+                 display: 'none',
+               },
+               border: expanded ? `2px solid ${theme.palette.primary.main}` : `1px solid ${theme.palette.divider}`,
+               borderRadius: '12px !important',
+               backgroundColor: expanded ? '#f8fafc' : 'background.paper',
+               transition: 'all 0.2s ease',
+               ...item.sx,
             }}
           >
             <AccordionSummary
-              expandIcon={<ExpandMoreIcon sx={{ color: expanded ? theme.palette.primary.main : 'inherit' }} />}
+              expandIcon={<ExpandMoreIcon sx={{ color: 'text.secondary' }} />}
               aria-controls={`${item.id}-content`}
               id={`${item.id}-header`}
-              sx={{
-                backgroundColor: expanded ? `${theme.palette.primary.main}0A` : 'transparent', // very light primary bg on expand
-                '&:hover': {
-                  backgroundColor: `${theme.palette.background.default}`,
-                },
-                transition: 'background-color 0.2s',
-              }}
+              sx={{ px: { xs: 2, sm: 3 }, py: 1 }}
             >
-              <Typography
-                sx={{
-                  fontWeight: expanded ? 600 : 500,
-                  color: expanded ? theme.palette.primary.main : 'text.primary',
-                  transition: 'color 0.2s',
-                }}
-              >
-                {item.title}
-              </Typography>
+              <Box sx={{ display: 'flex', width: '100%', alignItems: 'center', justifyContent: 'space-between', pr: 2 }}>
+                <Typography sx={{ 
+                  fontWeight: expanded ? 700 : 600, 
+                  fontSize: '1.05rem',
+                  color: expanded ? 'text.primary' : theme.palette.primary.main,
+                  transition: 'color 0.2s'
+                }}>
+                  {item.title}
+                </Typography>
+                
+                {/* Only show status if it is provided and the accordion is CLOSED */}
+                {!expanded && item.status && (
+                  <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                    {typeof item.status === 'string' ? (
+                      <Typography variant="body2" sx={{ color: 'text.secondary', fontWeight: 500 }}>
+                        {item.status}
+                      </Typography>
+                    ) : (
+                      item.status
+                    )}
+                  </Box>
+                )}
+              </Box>
             </AccordionSummary>
-            <AccordionDetails
-              sx={{
-                borderTop: `1px solid ${theme.palette.divider}`,
-                backgroundColor: '#fff',
-                p: 2.5,
-              }}
-            >
-              <Box>{item.content}</Box>
+            
+            <AccordionDetails sx={{ p: { xs: 2, sm: 3 } }}>
+              {/* Form Content Wrapper */}
+              <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+                {item.content}
+              </Box>
             </AccordionDetails>
           </Accordion>
         );

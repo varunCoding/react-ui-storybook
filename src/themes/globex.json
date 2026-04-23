@@ -1,0 +1,37 @@
+{
+  "name": "globex",
+  "palette": {
+    "mode": "dark",
+    "primary": {
+      "main": "#ff9800",
+      "light": "#ffc947",
+      "dark": "#c66900",
+      "contrastText": "#000000"
+    },
+    "secondary": {
+      "main": "#9c27b0",
+      "light": "#d05ce3",
+      "dark": "#6a0080"
+    },
+    "background": {
+      "default": "#121212",
+      "paper": "#1e1e1e"
+    }
+  },
+  "shape": {
+    "borderRadius": 16
+  },
+  "typography": {
+    "fontFamily": "\"Open Sans\", \"Helvetica\", \"Arial\", sans-serif"
+  },
+  "components": {
+    "MuiButton": {
+      "styleOverrides": {
+        "root": {
+          "borderRadius": "16px",
+          "textTransform": "none"
+        }
+      }
+    }
+  }
+}

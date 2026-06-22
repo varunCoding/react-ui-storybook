@@ -82,12 +82,12 @@ export const AlertSlider: React.FC<AlertSliderProps> = ({
 
   const handlePrev = () => {
     if (!hasMultipleAlerts) return;
-    setActiveIndex((prev) => (prev === 0 ? alerts.length - 1 : prev - 1));
+    setActiveIndex((prev) => (prev > 0 ? prev - 1 : prev));
   };
 
   const handleNext = () => {
     if (!hasMultipleAlerts) return;
-    setActiveIndex((prev) => (prev === alerts.length - 1 ? 0 : prev + 1));
+    setActiveIndex((prev) => (prev < alerts.length - 1 ? prev + 1 : prev));
   };
 
   useEffect(() => {
@@ -99,7 +99,7 @@ export const AlertSlider: React.FC<AlertSliderProps> = ({
     }
 
     autoPlayTimerRef.current = setInterval(() => {
-      handleNext();
+      setActiveIndex((prev) => (prev === alerts.length - 1 ? 0 : prev + 1));
     }, autoPlayDuration);
 
     return () => {
@@ -154,6 +154,7 @@ export const AlertSlider: React.FC<AlertSliderProps> = ({
             <Box sx={{ display: 'flex', gap: 1 }}>
               <IconButton
                 onClick={handlePrev}
+                disabled={activeIndex === 0}
                 aria-label="Previous alert"
                 size="small"
                 sx={{
@@ -163,6 +164,10 @@ export const AlertSlider: React.FC<AlertSliderProps> = ({
                   '&:hover': {
                     backgroundColor: isDark ? 'rgba(144, 202, 249, 0.08)' : 'rgba(0, 91, 159, 0.04)',
                   },
+                  '&.Mui-disabled': {
+                    borderColor: '#8099FF',
+                    color: '#8099FF',
+                  },
                   transition: 'all 0.2s',
                 }}
               >
@@ -170,6 +175,7 @@ export const AlertSlider: React.FC<AlertSliderProps> = ({
               </IconButton>
               <IconButton
                 onClick={handleNext}
+                disabled={activeIndex === alerts.length - 1}
                 aria-label="Next alert"
                 size="small"
                 sx={{
@@ -178,6 +184,10 @@ export const AlertSlider: React.FC<AlertSliderProps> = ({
                   padding: '4px',
                   '&:hover': {
                     backgroundColor: isDark ? 'rgba(144, 202, 249, 0.08)' : 'rgba(0, 91, 159, 0.04)',
+                  },
+                  '&.Mui-disabled': {
+                    borderColor: '#8099FF',
+                    color: '#8099FF',
                   },
                   transition: 'all 0.2s',
                 }}

@@ -1,4 +1,3 @@
-import React from "react";
 import {
   Card,
   CardContent,
@@ -9,6 +8,7 @@ import {
   Accordion,
   AccordionSummary,
   AccordionDetails,
+  Link,
   type SxProps,
   type Theme,
 } from "@mui/material";
@@ -37,8 +37,16 @@ export interface PlanCardProps {
   infoMessage?: React.ReactNode;
   /** Custom accordion title, e.g. 'Plan details' */
   accordionTitle?: React.ReactNode;
-  /** Accordion content node */
+  /** Custom accordion content node. Takes precedence over accordionDetails array. */
   accordionContent?: React.ReactNode;
+  /** Array of details strings to automatically render as bullet items (ideal for REST API data) */
+  accordionDetails?: string[];
+  /** Optional footnote prefix text inside the expanded accordion */
+  accordionFooterText?: string;
+  /** Clickable link text at the bottom of the details list */
+  accordionFooterLinkText?: string;
+  /** Href URL for the details footer link */
+  accordionFooterLinkUrl?: string;
   /** Default accordion expanded state */
   accordionDefaultExpanded?: boolean;
   /** Card border radius override (default is '24px') */
@@ -80,6 +88,10 @@ export const PlanCard: React.FC<PlanCardProps> = ({
   infoMessage,
   accordionTitle = "Plan details",
   accordionContent,
+  accordionDetails = [],
+  accordionFooterText,
+  accordionFooterLinkText,
+  accordionFooterLinkUrl,
   accordionDefaultExpanded = false,
   borderRadius = "24px",
   borderColor = "divider",
@@ -88,6 +100,59 @@ export const PlanCard: React.FC<PlanCardProps> = ({
   className,
   sx,
 }) => {
+  
+  // Renders either dynamic array list or custom react node content
+  const renderAccordionContent = () => {
+    if (accordionContent) {
+      return accordionContent;
+    }
+
+    if (accordionDetails && accordionDetails.length > 0) {
+      return (
+        <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+          <Box component="ul" sx={{ m: 0, pl: 2.5, display: "flex", flexDirection: "column", gap: 1.25 }}>
+            {accordionDetails.map((detail, index) => (
+              <Box
+                component="li"
+                key={index}
+                sx={{
+                  fontSize: "14px",
+                  color: "text.primary",
+                  lineHeight: 1.5,
+                  fontWeight: 400,
+                  "&::marker": {
+                    color: "text.secondary",
+                  },
+                }}
+              >
+                {detail}
+              </Box>
+            ))}
+          </Box>
+
+          {(accordionFooterText || accordionFooterLinkText) && (
+            <Typography variant="body2" sx={{ mt: 1.5, fontWeight: 500, color: "text.secondary" }}>
+              {accordionFooterText}{" "}
+              {accordionFooterLinkText && (
+                <Link
+                  href={accordionFooterLinkUrl || "#"}
+                  underline="always"
+                  sx={{ color: "primary.main", fontWeight: 600 }}
+                >
+                  {accordionFooterLinkText}
+                </Link>
+              )}
+            </Typography>
+          )}
+        </Box>
+      );
+    }
+
+    return null;
+  };
+
+  const hasAccordion = !!accordionContent || (accordionDetails && accordionDetails.length > 0);
+
   return (
     <Card
       className={className}
@@ -199,7 +264,7 @@ export const PlanCard: React.FC<PlanCardProps> = ({
         {/* Divider below header if stats are present */}
         {stats.length > 0 && <Divider sx={{ mb: 2.5 }} />}
 
-        {/* Stats Section */}
+        {/* Stats Grid Section */}
         {stats.length > 0 && (
           <Box
             sx={{
@@ -262,7 +327,7 @@ export const PlanCard: React.FC<PlanCardProps> = ({
         )}
 
         {/* Accordion / Expandable Plan Details */}
-        {accordionContent && (
+        {hasAccordion && (
           <Box sx={{ width: "100%" }}>
             <Divider sx={{ mb: 1 }} />
             <Accordion
@@ -315,15 +380,12 @@ export const PlanCard: React.FC<PlanCardProps> = ({
                   backgroundColor: "transparent",
                 }}
               >
-                {accordionContent}
+                {renderAccordionContent()}
               </AccordionDetails>
             </Accordion>
           </Box>
         )}
       </CardContent>
-
-
-
     </Card>
   );
 };

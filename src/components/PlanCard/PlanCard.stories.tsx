@@ -104,6 +104,37 @@ export const DefaultPlanCardExpanded: Story = {
   },
 };
 
+// Showcase populating details directly using an array of strings (ideal for API data)
+export const ApiDataPopulated: Story = {
+  args: {
+    overline: "YOUR PLAN",
+    badge: "Active",
+    title: "Cigna Dental Complete",
+    subtitle: "Effective date: 05/01/2026",
+    headerAction: <PillButton label="Manage plan" showDropdownIcon />,
+    stats: [
+      { value: "$1,000", label: "Annual maximum" },
+      { value: "$50", label: "Individual deductible" },
+      { value: "$150", label: "Family deductible" },
+    ],
+    infoMessage: <InfoMessage message="Your waiting period for [benefit(s)] has been waived." />,
+    accordionTitle: "Plan details",
+    accordionDefaultExpanded: true,
+    accordionDetails: [
+      "$34 average monthly premium¹",
+      "$0 routine dental check-ups, including cleanings and routine x-rays²",
+      "$50 individual and $150 family annual deductible apply to basic and major restorative services",
+      "$1,000 in benefits available that can apply toward things like fillings, crowns, root canals, and more",
+      "No referrals needed",
+      "No waiting periods for select services³",
+      "Access to our convenient nationwide Advantage Network⁴",
+    ],
+    accordionFooterText: "Looking for additional savings on your dental care?",
+    accordionFooterLinkText: "Learn more about our discount plans",
+    accordionFooterLinkUrl: "https://www.cigna.com",
+  },
+};
+
 // Minimalistic configuration
 export const MinimalCard: Story = {
   args: {

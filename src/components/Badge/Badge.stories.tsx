@@ -65,3 +65,35 @@ export const CustomTypography: Story = {
     padding: "6px 16px",
   },
 };
+
+const CheckIcon = () => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+    <polyline points="20 6 9 17 4 12" />
+  </svg>
+);
+
+const InfoIcon = () => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+    <circle cx="12" cy="12" r="10" />
+    <line x1="12" y1="16" x2="12" y2="12" />
+    <line x1="12" y1="8" x2="12.01" y2="8" />
+  </svg>
+);
+
+// Badge showing an icon on the left of label text
+export const WithCheckIcon: Story = {
+  args: {
+    label: "Active",
+    icon: <CheckIcon />,
+  },
+};
+
+// Badge showing a warning/info icon with a light-blue theme
+export const WithInfoIcon: Story = {
+  args: {
+    label: "Pending Verification",
+    icon: <InfoIcon />,
+    backgroundColor: "#e0f2fe", // soft blue background
+    textColor: "#0369a1", // dark blue text
+  },
+};
